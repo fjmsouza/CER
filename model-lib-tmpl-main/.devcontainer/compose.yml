@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  model-container-devenv:
+    container_name: model-cython-devenv
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../:/workspace:cached
+      - data-input:/data/input
+      - data-output:/data/output
+      - data-train:/data/train
+      - model-prams:/model/params
+
+volumes:
+  data-input:
+  data-output:
+  data-train:
+  model-prams:
