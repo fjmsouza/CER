@@ -1,33 +1,14 @@
 """Implementation of the XPTO model."""
 
 # import cython as cy  # noqa: ERA001
+import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression
-
-model=LinearRegression(fit_intercept=True)
-
-# def predict(data: pd.DataFrame) -> cy.float:
-def predict(xfit):  # noqa: ANN001, ANN201, D417
-    """Predict the output for the given data.
-
-    Args:
-    ----
-        data (Pandas DataFrame): The input data.
-
-    Returns:
-    -------
-        float (Cython Float): The predicted output.
-
-    """
-    # TODO (@someone): Implement the prediction logic.
-    # return 42  # noqa: ERA001
-
-    return model.predict(xfit[:, np.newaxis])
+from sklearn.svm import SVC
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
 
-
-# def train(data: pd.DataFrame) -> any:
-def train (x,y):  # noqa: ANN001, ANN201, D417
+def train (x_train,y_train):  # noqa: ANN001, ANN201, D417
     """Train the model using the given data.
 
     Args:
@@ -41,18 +22,38 @@ def train (x,y):  # noqa: ANN001, ANN201, D417
     """
     # TODO (@someone): Implement the training logic.
 
-    model.fit(x[:,np.newaxis], y)
+    model= SVC(gamma='auto', random_state=1)
 
-    # return {'model': 'xpto'}  # noqa: ERA001
+    model.fit(x_train,y_train.to_numpy().ravel())
+
     return model
 
+def predict(model, x_test):  # noqa: ANN001, ANN201, D417
+    """Predict the output for the given data.
+
+    Args:
+    ----
+        data (Pandas DataFrame): The input data.
+
+    Returns:
+    -------
+        float (Cython Float): The predicted output.
+
+    """
+    # TODO (@someone): Implement the prediction logic.
+    # return 42  # noqa: ERA001
+    return model.predict(x_test)
 
 
-np.random.seed(0)  # noqa: NPY002
-n=20   # Number of data points
-x=np.linspace(0, 10, n)
-y=x*2 + 1 + 1*np.random.Generator(n) # Standard deviation 1
-model = train(x,y)
 
+diabetes = pd.read_csv('dataset/diabetes.csv')
+inputs=['Pregnancies','Glucose','BloodPressure','SkinThickness','Insulin','BMI','DiabetesPedigreeFunction','Age']
+output=['Outcome']
 
+x=diabetes[inputs]
+y=diabetes[output]
 
+normalized=MinMaxScaler()
+normalized_inputs=normalized.fit_transform(x)
+x_train,x_test,y_train,y_test = train_test_split(normalized_inputs,y, test_size=0.2, random_state=42)
+model = train(x_train,y_train)
