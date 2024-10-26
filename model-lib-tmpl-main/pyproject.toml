@@ -9,6 +9,7 @@ readme = "README.md"
 python = "~3.12"
 cython = "^3.0.10"
 pandas = "^2.2.2"
+pytest = "^8.3.2"
 
 
 [tool.poetry.group.dev.dependencies]
