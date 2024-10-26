@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "model_xpto"
+version = "0.0.0"
+description = "Modelo para lib de model para o CFT em Cython"
+authors = ["Marlos Ribeiro <marlos@ufpe.br>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "~3.12"
+cython = "^3.0.10"
+pandas = "^2.2.2"
+pytest = "^8.3.2"
+
+
+[tool.poetry.group.dev.dependencies]
+setuptools = "^70.1.1"
+pytest = "^8.3.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
